@@ -2,7 +2,7 @@
 ### jQuery for Dart
 
 Fletch is a [Dart](https://www.dartlang.org/) library aiming to provide similar
-functionality to [jQuery](http://jquery.com/).  However, Fletch is _not_
+functionality to [jQuery](http://jquery.com/). However, Fletch is _not_
 designed to be API-compatible with jQuery, instead preferring to take advantage
 of Dart features and design patterns.
 
@@ -22,7 +22,7 @@ $("<a>")..text = "Dart is cool!"
         ..appendTo("body");
 ```
 
-Fletch is very mucha  work in progress.  So far, you can select/create
+Fletch is very much a work in progress. So far, you can select/create
 elements, get/set text, get/set styles, add/remove classes, get/set attributes,
 and listen to/trigger events. Fletch should be considered **alpha quality**, as
 the public-facing API may change radically between releases.

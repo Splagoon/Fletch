@@ -8,11 +8,19 @@ class _EventFunctor {
 
     _EventFunctor(this._event, this._elements);
 
+    /**
+     * Dispatches the event on all selected elements.
+     */
     void call() {
         for (var element in _elements)
             element.dispatchEvent(new Event(_event));
     }
 
+    /**
+     * Adds a listener for the event on all selected elements.
+     *
+     * For multiple listeners, call this method multiple times.
+     */
     void listen(_FletchEventListener listener) {
         for (var element in _elements)
             element.on[_event].listen((evt) => listener(evt, element));
@@ -24,6 +32,11 @@ class _EventFunctor {
 class _EventCollection {
     Fletch _parent;
 
+    /**
+     * Gets an event by name.
+     *
+     * The returned object can be used to dispatch and listen for the event.
+     */
     _EventFunctor operator[](String event) => new _EventFunctor(event, _parent);
 }
 

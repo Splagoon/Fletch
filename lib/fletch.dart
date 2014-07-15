@@ -122,12 +122,12 @@ class Fletch extends IterableBase<Element> with _EventMixin {
      * [Element]s.
      *
      * Valid sources are:
-     * * A [String] CSS selector used to match elements
-     * * A [String] of HTML to parse into an element
-     * * An [Element]
-     * * An [Iterable] of [Element]
-     * * A [HtmlDocument]
-     * * A [Fletch] (will simply return the original object)
+     * + A [String] CSS selector used to match elements
+     * + A [String] of HTML to parse into an element
+     * + An [Element]
+     * + An [Iterable] of [Element]
+     * + A [HtmlDocument]
+     * + A [Fletch] (will simply return the original object)
      *
      * If a second parameter is supplied, it will be used as
      * the top-level element to run the CSS selector as. For
@@ -303,12 +303,12 @@ class Fletch extends IterableBase<Element> with _EventMixin {
  * [Element]s.
  *
  * Valid sources are:
- * * A [String] CSS selector used to match elements
- * * A [String] of HTML to parse into an element
- * * An [Element]
- * * An [Iterable] of [Element]
- * * A [HtmlDocument]
- * * A [Fletch] (will simply return the original object)
+ * + A [String] CSS selector used to match elements
+ * + A [String] of HTML to parse into an element
+ * + An [Element]
+ * + An [Iterable] of [Element]
+ * + A [HtmlDocument]
+ * + A [Fletch] (will simply return the original object)
  *
  * If a second parameter is supplied, it will be used as
  * the top-level element to run the CSS selector as. For
@@ -317,3 +317,8 @@ class Fletch extends IterableBase<Element> with _EventMixin {
  * This is shorthand for `new Fletch(selection, context)`
  */
 Fletch $(dynamic selection, [dynamic context]) => new Fletch(selection, context);
+
+// Here be the utility functions
+_coalesce(value, defaultValue) {
+    return value == null ? defaultValue : value;
+}

@@ -4,7 +4,7 @@ import "dart:html";
 
 void coreTest() {
     group("Fletch object", () {
-        test("should get text on first element", () {
+        test("should get text on all elements", () {
             expect($("h1").text, equals("Fletch Test"));
             expect($("#first-list li").text, equals("South North West East"));
             expect($(null).text, equals(""));
@@ -57,7 +57,7 @@ void coreTest() {
         });
 
         test("should get children of elements", () {
-            expect($("#header").children, hasLength(2));
+            expect($("#header").children, hasLength(3));
             expect($("h1").children, isEmpty);
         });
     });
