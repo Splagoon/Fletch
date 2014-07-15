@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Fletch Test</title>
+    <script async type="application/dart" src="fletch_test.dart"></script>
+    <script async src="packages/browser/dart.js"></script>
+    <style>
+        html {
+            font-size: 14pt;
+        }
+
+        body {
+            font-family: sans-serif;
+            text-align: center;
+        }
+
+        .unittest-table {
+            text-align: left;
+            font-size: 12pt;
+            margin: 0 auto;
+        }
+
+        #container {
+            width: 50%;
+            margin: 0 auto;
+        }
+
+        .content {
+            background: #EEE;
+            display: inline-block;
+            margin: 1.65%;
+            padding: 1.65%;
+            width: 26.7%;
+            float: left;
+        }
+
+        ul {
+            margin: 2.5%;
+            width: 45%;
+            float: left;
+            display: block;
+            padding: 0;
+            text-align: left;
+        }
+    </style>
+  </head>
+  <body>
+    <div id="header">
+        <h1>Fletch Test</h1>
+        <p>This is a document used for testing various Fletch functions.</p>
+    </div>
+    <div id="container">
+        <div class="content">Content 1</div>
+        <div class="content">Content 2</div>
+        <div class="content">Content 3</div>
+        <div class="content">Content 4</div>
+        <div class="content">Content 5</div>
+        <div class="content">Content 6</div>
+        <div class="content">Content 7</div>
+        <div class="content">Content 8</div>
+        <div class="content">Content 9</div>
+        <div class="remove first">Here is an element.</div>
+        <div class="remove">Here is another element.</div>
+        <div class="remove">Here is yet another element.</div>
+        <ul id="first-list">
+            <li>South</li>
+            <li>North</li>
+            <li>West</li>
+            <li>East</li>
+        </ul>
+        <ul id="second-list">
+            <li>Alpha</li>
+            <li>Beta</li>
+            <li>Gamma</li>
+        </ul>
+    </div>
+  </body>
+</html>
