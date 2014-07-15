@@ -15,7 +15,7 @@ if [[ $? -ne 0 ]]; then
   PATH=$cs_path:$PATH
 fi
 
-DUMP=$(content_shell --args --dump-render-tree test.html)
+DUMP=$(content_shell --dump-render-tree test/test.html)
 echo "$DUMP"
 
 REGEX="All [0-9]+ tests pass"
