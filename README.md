@@ -1,4 +1,4 @@
-# Fletch
+# Fletch [![Build Status](https://drone.io/github.com/RobKellett/Fletch/status.png)](https://drone.io/github.com/RobKellett/Fletch/latest)
 ### jQuery for Dart
 
 Fletch is a [Dart](https://www.dartlang.org/) library aiming to provide similar
