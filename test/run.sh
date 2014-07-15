@@ -5,14 +5,17 @@
 # bail on error
 set -e
 
-DIR=$( cd $( dirname "${BASH_SOURCE[0]}" ) && pwd )
+# Download & install content_shell if not found
+which content_shell
+if [[ $? -ne 0 ]]; then
+  $DART_SDK/../chromium/download_contentshell.sh
+  unzip content_shell-linux-x64-release.zip
 
-BROWSER_TEST_FILE=$DIR/../test/test.html
+  cs_path=$(ls -d drt-*)
+  PATH=$cs_path:$PATH
+fi
 
-echo Running against test file at:
-echo $BROWSER_TEST_FILE
-
-DUMP=$(content_shell --args --dump-render-tree $BROWSER_TEST_FILE)
+DUMP=$(content_shell --args --dump-render-tree test.html)
 echo "$DUMP"
 
 REGEX="All [0-9]+ tests pass"
