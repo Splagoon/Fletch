@@ -9,11 +9,10 @@ DIR=$( cd $( dirname "${BASH_SOURCE[0]}" ) && pwd )
 
 BROWSER_TEST_FILE=$DIR/../test/test.html
 
-echo DumpRenderTree must be in your path for this to work
 echo Running against test file at:
 echo $BROWSER_TEST_FILE
 
-DUMP=$(DumpRenderTree $BROWSER_TEST_FILE)
+DUMP=$(content_shell --args --dump-render-tree $BROWSER_TEST_FILE)
 echo "$DUMP"
 
 REGEX="All [0-9]+ tests pass"
