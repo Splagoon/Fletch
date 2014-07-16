@@ -27,5 +27,11 @@ elements, get/set text, get/set styles, add/remove classes, get/set attributes,
 and listen to/trigger events. Fletch should be considered **alpha quality**, as
 the public-facing API may change radically between releases.
 
+## Installing
+
+[Fletch is available on **pub**.](http://pub.dartlang.org/packages/fletch) Add
+"fletch" as a dependency and run `pub install`. Then, just import Fletch into
+your code with `import 'package:fletch/fletch.dart';` and you're all set!
+
 Fletch is released under the **ISC License**, which is functionally equivalent
 to the BSD-2 and MIT licenses. See the `LICENSE` file for more information.
