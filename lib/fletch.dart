@@ -188,11 +188,26 @@ class Fletch extends IterableBase<Element> with _EventMixin {
      *
      * Setting a value will set it for all selected elements.
      */
-    String get text => _elements.map((e) => e.text).join(" ");
+    String get text => _elements.map((e) => e.text.trim()).join(" ");
 
     void set text(String content) {
         for (var element in this)
             element.text = content;
+    }
+
+    /**
+     * The HTML content of the selected [Element]s.
+     *
+     * When multiple elements are selected, only the
+     * first [Element]'s content is returned.
+     *
+     * Setting a value will set it for all selected elements.
+     */
+    String get html => _elements.length > 0 ? _elements.first.innerHtml.trim() : "";
+
+    String set html(String content) {
+        for (var element in this)
+            element.innerHtml = content;
     }
 
     List<Element> _append(Fletch selection) {

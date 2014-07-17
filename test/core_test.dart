@@ -18,6 +18,23 @@ void coreTest() {
             expect(() => $(null).text = "Test", returnsNormally);
         });
 
+        test("should get empty text when no elements are selected", () {
+            expect($(null).text, isEmpty);
+        });
+
+        test("should get HTML on first element", () {
+            expect($("div.html").html, equals("<em>Here is an emphasized element.</em>"));
+        });
+
+        test("should set HTML on all elements", () {
+            $(".html").html = "<span class='html'>Test</span>";
+            expect($("div.html span.html"), hasLength(2));
+        });
+
+        test("should get empty HTML when no elements are selected", () {
+            expect($(null).html, isEmpty);
+        });
+
         test("should append single element to single element", () {
             $("#container").append("<div>Append Test</div>");
             expect($("#container div").last.text, equals("Append Test"));

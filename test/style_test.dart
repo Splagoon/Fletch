@@ -16,15 +16,15 @@ void styleTest() {
 
         test("should set multiple property values on all elements", () {
             $("p").style({
-                "font-weight": "bold",
+                "line-height": "25px",
                 "font-family": "serif",
                 "background-color": "yellow"
             });
 
-            expect($("p[data-purpose='summary']").style["font-weight"], equals("bold"));
+            expect($("p[data-purpose='summary']").style["line-height"], equals("25px"));
             expect($("p[data-purpose='summary']").style["font-family"], equals("serif"));
             expect($("p[data-purpose='summary']").style["background-color"], equals("rgb(255, 255, 0)"));
-            expect($("p[data-purpose='testing']").style["font-weight"], equals("bold"));
+            expect($("p[data-purpose='testing']").style["line-height"], equals("25px"));
             expect($("p[data-purpose='testing']").style["font-family"], equals("serif"));
             expect($("p[data-purpose='testing']").style["background-color"], equals("rgb(255, 255, 0)"));
         });
