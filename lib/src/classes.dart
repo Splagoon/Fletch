@@ -1,6 +1,6 @@
 part of fletch;
 
-class _ClassCollection {
+abstract class ClassCollection {
     Fletch _parent;
 
     /**
@@ -34,3 +34,5 @@ class _ClassCollection {
             element.classes.toggle(className);
     }
 }
+
+class _ClassCollection extends ClassCollection {}

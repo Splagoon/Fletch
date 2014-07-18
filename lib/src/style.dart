@@ -1,6 +1,6 @@
 part of fletch;
 
-class _StyleCollection {
+abstract class StyleCollection {
     Fletch _parent;
 
     /**
@@ -37,3 +37,4 @@ class _StyleCollection {
     }
 }
 
+class _StyleCollection extends StyleCollection {}

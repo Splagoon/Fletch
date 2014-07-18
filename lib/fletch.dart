@@ -3,6 +3,7 @@
  */
 library fletch;
 
+import "dart:async";
 import "dart:collection";
 import "dart:html";
 
@@ -45,7 +46,7 @@ class Fletch extends IterableBase<Element> with _EventMixin {
      * When getting the value of an attribute that does not exist
      * or does not have its value set, `null` will be returned.
      */
-    final _AttributeCollection attr = new _AttributeCollection();
+    final AttributeCollection attr = new _AttributeCollection();
 
     /**
      * The classes on this group of [Element]s.
@@ -58,7 +59,7 @@ class Fletch extends IterableBase<Element> with _EventMixin {
      * it to elements that do not have it and remove it from
      * elements that do have it.
      */
-    final _ClassCollection classes = new _ClassCollection();
+    final ClassCollection classes = new _ClassCollection();
 
     /**
      * The events on this group of [Element]s.
@@ -84,7 +85,7 @@ class Fletch extends IterableBase<Element> with _EventMixin {
      * You can dispatch and listen to custom events by
      * passing your custom event names into the indexer.
      */
-    final _EventCollection event = new _EventCollection();
+    final EventCollection event = new _EventCollection();
 
     /**
      * The CSS styles on this group of [Element]s.
@@ -115,7 +116,7 @@ class Fletch extends IterableBase<Element> with _EventMixin {
      *     });
      *
      */
-    final _StyleCollection style = new _StyleCollection();
+    final StyleCollection style = new _StyleCollection();
 
     /**
      * Constructs a [Fletch] wrapper from any valid source of

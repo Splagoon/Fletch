@@ -1,6 +1,6 @@
 part of fletch;
 
-class _AttributeCollection {
+abstract class AttributeCollection {
     Fletch _parent;
 
     /**
@@ -38,3 +38,5 @@ class _AttributeCollection {
             attributes.forEach((attribute, value) => element.attributes[attribute] = value);
     }
 }
+
+class _AttributeCollection extends AttributeCollection {}

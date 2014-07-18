@@ -10,7 +10,7 @@ void eventTest() {
             $("<img>")..load.listen((evt, self) => loaded = true)
                       ..attr["src"] = "test.jpg";
 
-            new Timer(new Duration(seconds: 5), expectAsync(() {
+            new Timer(new Duration(seconds: 1), expectAsync(() {
                 if (!loaded)
                     fail("Event listener timed out");
             }));
@@ -23,10 +23,46 @@ void eventTest() {
                       ..load.listen((evt, self) => loaded2 = true)
                       ..attr["src"] = "test.jpg";
 
-            new Timer(new Duration(seconds: 5), expectAsync(() {
+            new Timer(new Duration(seconds: 1), expectAsync(() {
                 if (!loaded1 || !loaded2)
                     fail("Event listeners timed out");
             }));
+        });
+
+        test("should support subscription cancellation", () {
+            var loaded = false;
+            var img = $("<img>")..attr["src"] = "test.jpg";
+            var sub = img.load.listen((evt, self) => loaded = true);
+
+            sub.cancel();
+
+            new Timer(new Duration(seconds: 1), expectAsync(() {
+                if (loaded)
+                    fail("Cancelled listener was invoked");
+            }));
+        });
+
+        test("should support cancelling one listener but not others", () {
+            var loaded1 = false;
+            var loaded2 = false;
+            var img = $("<img>")..attr["src"] = "test.jpg";
+            var sub1 = img.load.listen((evt, self) => loaded1 = true);
+            var sub2 = img.load.listen((evt, self) => loaded2 = true);
+
+            sub2.cancel();
+
+            new Timer(new Duration(seconds: 1), expectAsync(() {
+                if (!loaded1)
+                    fail("Non-cancelled listener timed out");
+                if (loaded2)
+                    fail("Cancelled listener was invoked");
+            }));
+        });
+
+        test("should support cancelling one listener on multiple elements", () {
+            var sub = $("li").click.listen((evt, self) => fail("Cancelled listener was invoked"));
+            sub.cancel();
+            $("li").click();
         });
 
         test("should support dispatching", () {
