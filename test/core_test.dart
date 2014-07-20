@@ -77,5 +77,81 @@ void coreTest() {
             expect($("#header").children, hasLength(3));
             expect($("h1").children, isEmpty);
         });
+
+        test("should get empty input value when no elements are selected", () {
+            expect($(null).value, isEmpty);
+        });
+
+        test("should get empty input value when no inputs are selected", () {
+            expect($("div").value, isEmpty);
+        });
+
+        test("should get input value on first element", () {
+            expect($("input[type='checkbox']").value, equals("tést:valué"));
+        });
+
+        test("should set input value on all elements", () {
+            var hiddens = $("input[type='hidden']")..value = "this is a test";
+            for (var hidden in hiddens)
+                expect(hidden.value, equals("this is a test"));
+        });
+
+        test("should not fail when setting value on non-input elements", () {
+            expect(() => $("div").value = "test", returnsNormally);
+        });
+
+        test("should report as unchecked when no elements are selected", () {
+            expect($(null).checked, isFalse);
+        });
+
+        test("should report as unchecked when no checkable elements are selected", () {
+            expect($("div").checked, isFalse);
+        });
+
+        test("should get checked state on first element", () {
+            expect($("input[type='checkbox']").checked, isTrue);
+        });
+
+        test("should set checked state on all elements", () {
+            var checks = $("input[name='check-input-2']")..checked = true;
+            for (var check in checks)
+                expect(check.checked, isTrue);
+        });
+
+        test("should uncheck previous value when checking a radio button", () {
+            var radios = $("input[type='radio']");
+            var first = $(radios.first);
+            var second = $(radios.last);
+
+            expect(first.checked, isTrue);
+            expect(second.checked, isFalse);
+
+            second.checked = true;
+
+            expect(first.checked, isFalse);
+            expect(second.checked, isTrue);
+        });
+
+        test("should serialize single element", () {
+            expect($("input[type='text']").serialize(), equals("text-input=test+value"));
+        });
+
+        test("should serialize multiple elements", () {
+            expect($("input[type='text'], textarea").serialize(),
+                    equals("text-input=test+value&ta-input=The+quick%2C+brown+fox+jumps+over+the+lazy+dog."));
+        });
+
+        test("should serialize multi-value inputs multiple times", () {
+            expect($("input[name='check-input']").serialize(),
+                    equals("check-input=t%C3%A9st%3Avalu%C3%A9&check-input=%E3%83%86%E3%82%B9%E3%83%88"));
+        });
+
+        test("should serialize empty string when no inputs are selected", () {
+            expect($("ul").serialize(), isEmpty);
+        });
+
+        test("should serialize empty string when no elements are selected", () {
+            expect($(null).serialize(), isEmpty);
+        });
     });
 }

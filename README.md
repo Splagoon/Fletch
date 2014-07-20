@@ -22,10 +22,12 @@ $("<a>")..text = "Dart is cool!"
         ..appendTo("body");
 ```
 
-Fletch is very much a work in progress. So far, you can select/create
-elements, get/set text, get/set styles, add/remove classes, get/set attributes,
-and listen to/trigger events. Fletch should be considered **alpha quality**, as
-the public-facing API may change radically between releases.
+Full API documentation is available [here](http://robkellett.github.io/Fletch/).
+
+Fletch is very much a work in progress. So far, Fletch supports the most common
+cases for manipulating the DOM, styles, attributes, events, and form data.
+Fletch should be considered **alpha quality**, as the public-facing API may 
+change radically between releases.
 
 ## Installing
 

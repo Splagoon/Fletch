@@ -26,7 +26,7 @@ final _html_regex = new RegExp("^<.+>\$");
  * can be accessed through normal indexing or iteration.
  */
 class Fletch extends IterableBase<Element> with _EventMixin {
-    final List<Element> _elements;
+    final Iterable<Element> _elements;
 
     /**
      * The attributes on this group of [Element]s.
@@ -123,12 +123,18 @@ class Fletch extends IterableBase<Element> with _EventMixin {
      * [Element]s.
      *
      * Valid sources are:
-     * + A [String] CSS selector used to match elements
-     * + A [String] of HTML to parse into an element
-     * + An [Element]
-     * + An [Iterable] of [Element]
-     * + A [HtmlDocument]
-     * + A [Fletch] (will simply return the original object)
+     *
+     *  * A [String] CSS selector used to match elements
+     *
+     *  * A [String] of HTML to parse into an element
+     *
+     *  * An [Element]
+     *
+     *  * An [Iterable] of [Element]
+     *
+     *  * A [HtmlDocument]
+     *
+     *  * A [Fletch] (will simply return the original object)
      *
      * If a second parameter is supplied, it will be used as
      * the top-level element to run the CSS selector as. For
@@ -199,16 +205,70 @@ class Fletch extends IterableBase<Element> with _EventMixin {
     /**
      * The HTML content of the selected [Element]s.
      *
-     * When multiple elements are selected, only the
-     * first [Element]'s content is returned.
+     * When multiple elements are selected, only the first
+     * [Element]'s content is returned.
      *
      * Setting a value will set it for all selected elements.
      */
     String get html => _elements.length > 0 ? _elements.first.innerHtml.trim() : "";
 
-    String set html(String content) {
+    void set html(String content) {
         for (var element in this)
             element.innerHtml = content;
+    }
+
+    /**
+     * The value of the selected [Element]s.
+     *
+     * For input elements, this represents the value entered
+     * by the user.
+     *
+     * When multiple elements are selected, only the first
+     * [Element]'s value is returned.
+     *
+     * Setting a value will set it for all selected elements.
+     */
+    String get value => (length > 0 && _hasValue(first)) ? first.value : "";
+
+    void set value(String value) {
+        for (var element in this) {
+            if (_hasValue(element))
+                element.value = value;
+        }
+    }
+
+    /**
+     * The checked state of the selected [Element]s.
+     *
+     * When multiple elements are selected, only the first
+     * [Element]'s checked state is returned.
+     *
+     * Setting a value will set it for all selected elements.
+     *
+     * Setting a radio button to be checked will un-check
+     * the others in the radio button's group.
+     *
+     * This property only has meaning for checkboxes and
+     * radio buttons. For all other elements, this property
+     * will always return `false` and assignments will be
+     * ignored.
+     */
+    bool get checked {
+        if (length == 0)
+            return false;
+
+        var element = first;
+        if (!_isCheckable(element))
+            return false;
+
+        return element.checked;
+    }
+
+    void set checked(bool value) {
+        for (var element in this) {
+            if (_isCheckable(element))
+                element.checked = value;
+        }
     }
 
     List<Element> _append(Fletch selection) {
@@ -283,6 +343,41 @@ class Fletch extends IterableBase<Element> with _EventMixin {
     }
 
     /**
+     * Encodes the selected form elements as a URL-safe [String].
+     *
+     * The encoded string can used as part of a query string to
+     * submit the form via GET or POST requests.
+     * An example of this format:
+     *
+     *     name1=this+is+an+example1&name2=another+example
+     *
+     * Only elements with a set `name` attribute and a set value
+     * will appear in the string. Additionally, unchecked
+     * checkboxes and radio buttons will be excluded.
+     */
+    String serialize() {
+        var inputs = new Fletch("[name]", this).toList()..addAll(this.where((e) => e.attributes.containsKey("name")));
+        var result = [];
+
+        for (var input in inputs) {
+            if (_hasValue(input) && (!_isCheckable(input) || input.checked) && input.value.length > 0) {
+                var values = [];
+
+                // Special case for <select multiple>
+                if (input is SelectElement && input.attributes["multiple"] != null)
+                    values = $("option", input).where((e) => e.selected).map((e) => e.value);
+                else
+                    values = [input.value];
+
+                for (var value in values)
+                    result.add(input.attributes["name"] + "=" + Uri.encodeQueryComponent(value));
+            }
+        }
+
+        return result.join("&");
+    }
+
+    /**
      * The parent(s) of the currently selected [Element]s.
      */
     Fletch get parent => new Fletch(_elements.map((element) => element.parent).where((element) => element != null).toSet());
@@ -319,12 +414,18 @@ class Fletch extends IterableBase<Element> with _EventMixin {
  * [Element]s.
  *
  * Valid sources are:
- * + A [String] CSS selector used to match elements
- * + A [String] of HTML to parse into an element
- * + An [Element]
- * + An [Iterable] of [Element]
- * + A [HtmlDocument]
- * + A [Fletch] (will simply return the original object)
+ *
+ *  * A [String] CSS selector used to match elements
+ *
+ *  * A [String] of HTML to parse into an element
+ *
+ *  * An [Element]
+ *
+ *  * An [Iterable] of [Element]
+ *
+ *  * A [HtmlDocument]
+ *
+ *  * A [Fletch] (will simply return the original object)
  *
  * If a second parameter is supplied, it will be used as
  * the top-level element to run the CSS selector as. For
@@ -337,4 +438,18 @@ Fletch $(dynamic selection, [dynamic context]) => new Fletch(selection, context)
 // Here be the utility functions
 _coalesce(value, defaultValue) {
     return value == null ? defaultValue : value;
+}
+
+_isCheckable(element) {
+    return ["checkbox", "radio"].contains(_coalesce(element.attributes["type"], "").toLowerCase());
+}
+
+_hasValue(element) {
+    return element is ButtonElement ||
+           element is InputElement ||
+           element is OptionElement ||
+           element is OutputElement ||
+           element is SelectElement ||
+           element is TextAreaElement;
+    // TODO: elements with numerical values: MeterElement, ProgressElement
 }
