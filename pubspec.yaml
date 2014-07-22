@@ -1,5 +1,5 @@
 name: fletch
-version: 0.2.0
+version: 0.3.0
 author: Rob Kellett <rob@kelle.tt>
 description: A jQuery-like library implemented using common Dart patterns.
 homepage: https://github.com/RobKellett/Fletch
