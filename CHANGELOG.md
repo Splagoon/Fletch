@@ -5,7 +5,9 @@ _Not Yet Released_
 
  * Added `.classes.contains()`, `.classes.containsAll()`,
    `.classes.containsAny()`, `.classes.addAll()`, `.classes.removeAll()`, and
-   `.classes.toggleAll()`
+   `.classes.toggleAll()` for better class manipulation
+   
+ * Added `.event[].listenOnce()` for listening for an event once (obviously)
 
 ## 0.2.0
 _Released 7/20/2014_

@@ -13,6 +13,15 @@ abstract class EventSubscription {
 
     EventSubscription._new(this._subscriptions);
 
+    /**
+     * Cancels the subscription and stops listening
+     * to the associated event.
+     *
+     * Note that events can have multiple listeners,
+     * and this method will only remove the one
+     * associated with its listener. Cancelling this
+     * listener will not affect the other listeners.
+     */
     void cancel() {
         for (var subscription in _subscriptions)
             subscription.cancel();
@@ -47,6 +56,27 @@ abstract class EventFunctor {
         for (var element in _elements)
             subs.add(element.on[_event].listen((evt) => listener(evt, element)));
         return new _EventSubscription(subs);
+    }
+
+    /**
+     * Adds a listener that will only fire once per element.
+     *
+     * After the listener is fired once, it will automatically
+     * stop listening to the event.
+     *
+     * Note that the listener is per-element, so if multiple
+     * elements are selected, the listener will listen once
+     * _per element._ That is, if one element's listener is
+     * fired, it will stop listening on that element, but the
+     * other elements will be unaffected until their own
+     * listeners are fired.
+     *
+     * It is not possible to cancel the listener before it
+     * fires.
+     */
+    void listenOnce(FletchEventListener listener) {
+        for (var element in _elements)
+            element.on[_event].first.then((evt) => listener(evt, element));
     }
 }
 

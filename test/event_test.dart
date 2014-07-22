@@ -5,7 +5,7 @@ import "dart:async";
 
 void eventTest() {
     group("Fletch events", () {
-        test("should support single listener", () {
+        test("should support adding a single listener", () {
             var loaded = false;
             $("<img>")..load.listen((evt, self) => loaded = true)
                       ..attr["src"] = "test.jpg";
@@ -16,7 +16,7 @@ void eventTest() {
             }));
         });
 
-        test("should support multiple listeners", () {
+        test("should support adding multiple listeners", () {
             var loaded1 = false;
             var loaded2 = false;
             $("<img>")..load.listen((evt, self) => loaded1 = true)
@@ -29,7 +29,7 @@ void eventTest() {
             }));
         });
 
-        test("should support subscription cancellation", () {
+        test("should support cancelling a listener", () {
             var loaded = false;
             var img = $("<img>")..attr["src"] = "test.jpg";
             var sub = img.load.listen((evt, self) => loaded = true);
@@ -63,6 +63,18 @@ void eventTest() {
             var sub = $("li").click.listen((evt, self) => fail("Cancelled listener was invoked"));
             sub.cancel();
             $("li").click();
+        });
+
+        test("should support adding a one-time-only listener", () {
+            var elements = $(".content"),
+                counter = 0;
+            elements.event["test-event"].listenOnce((evt, self) => counter++);
+
+            elements.event["test-event"]();
+            expect(counter, equals(elements.length));
+
+            elements.event["test-event"]();
+            expect(counter, equals(elements.length));
         });
 
         test("should support dispatching", () {
