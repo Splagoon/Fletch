@@ -136,9 +136,18 @@ class Fletch extends IterableBase<Element> with _EventMixin {
      *
      *  * A [Fletch] (will simply return the original object)
      *
-     * If a second parameter is supplied, it will be used as
-     * the top-level element to run the CSS selector as. For
-     * other sources, the second parameter is ignored.
+     * If the first parameter is a CSS selector and the second
+     * parameter is supplied, it will be used as the root
+     * element(s) to run the CSS selector under.
+     * For example:
+     *
+     *     $(".selector", ".context")
+     *
+     * Is functionally equivalent to:
+     *
+     *     $(".context").find(".selector")
+     *
+     * For other sources, the second parameter is ignored.
      */
     factory Fletch(dynamic selection, [dynamic context]) {
         if (selection == null)
@@ -156,8 +165,10 @@ class Fletch extends IterableBase<Element> with _EventMixin {
             }
 
             // This is a CSS selector
-            context = context == null ? [document] : new Fletch(context);
-            return new Fletch._new(context.expand((element) => element.querySelectorAll(selection)).toList());
+            if (context == null)
+                return new Fletch._new(document.querySelectorAll(selection));
+
+            return new Fletch(context).find(selection);
         }
 
         if (selection is Element)
@@ -376,6 +387,21 @@ class Fletch extends IterableBase<Element> with _EventMixin {
 
         return result.join("&");
     }
+
+    /**
+     * Finds the descendents of the currently selected [Element]s
+     * that match a given CSS selector.
+     *
+     * Note that the current selection is _not_ matched against
+     * the selector. For example:
+     *
+     *     $("body").find("*")
+     *
+     * This will return a [Fletch] instance containing all of
+     * the descendents of the `<body>` element, but _not_ the
+     * `<body>` element itself.
+     */
+    Fletch find(String selector) => new Fletch._new(expand((element) => element.querySelectorAll(selector)).toSet());
 
     /**
      * The parent(s) of the currently selected [Element]s.

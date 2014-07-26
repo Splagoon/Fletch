@@ -1,13 +1,16 @@
 # Fletch Changelog
 
 ## 0.3.0
-_Not Yet Released_
+_Released 7/25/2014_
 
  * Added `.classes.contains()`, `.classes.containsAll()`,
    `.classes.containsAny()`, `.classes.addAll()`, `.classes.removeAll()`, and
-   `.classes.toggleAll()` for better class manipulation
+   `.classes.toggleAll()` for improved class manipulation
    
  * Added `.event[].listenOnce()` for listening for an event once (obviously)
+ 
+ * Added `find()` for finding descendents of the selection that match a CSS
+   selector.
 
 ## 0.2.0
 _Released 7/20/2014_

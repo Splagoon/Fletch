@@ -78,6 +78,22 @@ void coreTest() {
             expect($("h1").children, isEmpty);
         });
 
+        test("should find descendents of elements matching a CSS selector", () {
+            expect($("#container").find(".content"), hasLength(9));
+        });
+
+        test("should return empty if no descendents match CSS selector", () {
+            expect($("ul").find(".test"), isEmpty);
+        });
+
+        test("should not include selecting when finding descendents", () {
+            expect($("ul").find("*").where((e) => e is UListElement), isEmpty);
+        });
+
+        test("should throw SyntaxError if searching for descendents using invalid CSS selector", () {
+            expect(() => $("body").find("?"), throwsA(predicate((e) => e is DomException && e.name == DomException.SYNTAX)));
+        });
+
         test("should get empty input value when no elements are selected", () {
             expect($(null).value, isEmpty);
         });
